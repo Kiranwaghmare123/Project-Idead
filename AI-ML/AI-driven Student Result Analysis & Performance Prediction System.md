@@ -1355,3 +1355,248 @@ If you tell me:
 
 * how much time you roughly have (e.g., 1 month / 3 months),
   I can compress this into a **week-wise or day-wise coding plan** for you.
+---
+
+Below is the **correct industry-standard layer sequence** for your **Web + AI/ML Result Analysis System**, especially since you're using **React + Spring Boot + PostgreSQL + Python ML Service**.
+
+This is the **final, clean, layered architecture** you can put into your project documentation or follow while coding.
+
+---
+
+# ⭐ **Overall Layer Sequence (High-Level)**
+
+From top (user-facing) to bottom (data + ML):
+
+```
+UI Layer  →  API Layer  →  Service Layer  →  Integration Layer  →  Data Layer  →  ML Layer  →  Infrastructure
+```
+
+Let’s break it down in the order execution flows:
+
+---
+
+# 1️⃣ **Presentation Layer / UI Layer (Frontend - React)**
+
+### Purpose:
+
+* Display dashboards, analytics, student results.
+* Offer forms for admin (student/exam/result upload).
+* Call backend REST APIs using Axios/Fetch.
+
+### Components:
+
+* Pages (Login, Dashboard, Analytics, Upload)
+* UI components (tables, forms, charts)
+* Auth context (token storage)
+* Route-level guards based on role
+
+---
+
+# 2️⃣ **API Layer / Controller Layer (Spring Boot Controllers)**
+
+### Purpose:
+
+* Receive HTTP requests from frontend.
+* Validate input.
+* Forward to Services.
+* Return responses (DTOs) to frontend.
+
+### Examples:
+
+* `AuthController`
+* `StudentController`
+* `ExamController`
+* `ResultController`
+* `AnalyticsController`
+* `AIController` (calls ML service)
+
+This layer **should not contain business logic**.
+
+---
+
+# 3️⃣ **Service Layer (Spring Boot Services)**
+
+### Purpose:
+
+* Core business logic.
+* Coordinates between Repository layer & ML Integration.
+* Applies security checks, validation, and workflows.
+
+### Examples:
+
+* `StudentService`
+* `SubjectService`
+* `ExamService`
+* `ResultService`
+* `AnalyticsService` (local analytics)
+* `MLIntegrationService` (calls Python ML)
+
+This is the *heart* of the backend.
+
+---
+
+# 4️⃣ **Integration Layer (External Communication Layer)**
+
+### Purpose:
+
+* Handles communication with **external systems** (ML service, storage).
+* Converts internal models into ML feature requests.
+* Calls:
+
+  * FastAPI ML endpoints
+  * Object storage (if used)
+  * Email/SMS (optional)
+
+### Components:
+
+* `MLIntegrationService`
+
+  * `callPredictScoreAPI()`
+  * `callPredictRiskAPI()`
+  * `callClusterAPI()`
+* Optionally:
+
+  * `FileStorageService` (S3/MinIO)
+  * Notification/SMTP integration
+
+This keeps external integrations **clean & isolated**.
+
+---
+
+# 5️⃣ **Data Access Layer (Repository Layer – JPA)**
+
+### Purpose:
+
+* Interact with the database.
+* Encapsulate SQL queries.
+* Map entities to tables.
+
+### Components:
+
+* `UserRepository`
+* `StudentRepository`
+* `SubjectRepository`
+* `ExamRepository`
+* `ResultRepository`
+* `AuditLogRepository`
+
+### Technologies:
+
+* Spring Data JPA
+* Hibernate
+* Native SQL queries (if needed)
+
+---
+
+# 6️⃣ **Database Layer (PostgreSQL + Migrations)**
+
+### Purpose:
+
+* Persist data (students, subjects, exams, results).
+* Provide analytic SQL views if needed.
+
+### Components:
+
+* Database tables
+* Indexes
+* Foreign keys
+* Schema migrations (Flyway)
+
+### Sample Tables:
+
+* `users`
+* `students`
+* `subjects`
+* `exams`
+* `results`
+
+---
+
+# 7️⃣ **ML Layer (Python ML Microservice)**
+
+### Purpose:
+
+* Provide AI features to the backend.
+* Build, serve, and maintain ML models.
+
+### Components:
+
+* FastAPI/Flask app
+
+  * `/predict-score`
+  * `/risk-score`
+  * `/cluster-batch`
+* Feature engineering module
+* Trained `.pkl` models
+* Model retraining pipeline
+
+This layer sits **outside Spring Boot**, but is called by it.
+
+---
+
+# 8️⃣ **Infrastructure Layer (DevOps + Deployment)**
+
+### Purpose:
+
+* Deployment, security, scaling, and runtime management.
+
+### Components:
+
+* Nginx reverse proxy
+* Docker containers
+* Docker Compose (local)
+* EC2 / On-Prem deployments
+* Logs (ELK/Loki)
+* Monitoring (Prometheus/Grafana)
+* CI/CD (GitHub Actions/Jenkins)
+
+---
+
+# ⭐ Complete Layer Diagram (Final Sequence)
+
+```
+───────────────────────────────────────────────────────────
+            📱 Presentation Layer (React)
+───────────────────────────────────────────────────────────
+            🌐 API Layer (Controllers)
+───────────────────────────────────────────────────────────
+            🧠 Service Layer (Business Logic)
+───────────────────────────────────────────────────────────
+            🔗 Integration Layer (ML, Storage, External)
+───────────────────────────────────────────────────────────
+            🗂️ Data Access Layer (Repositories)
+───────────────────────────────────────────────────────────
+            🗄️ Database Layer (PostgreSQL)
+───────────────────────────────────────────────────────────
+            🤖 ML Layer (FastAPI + Models)
+───────────────────────────────────────────────────────────
+            🛠️ Infrastructure Layer (Nginx, Docker, Cloud)
+───────────────────────────────────────────────────────────
+```
+
+---
+
+# ⭐ What You Should Build In This Exact Order (Coding Sequence)
+
+1. **DB Schema + Entities**
+2. **Repository Layer**
+3. **Service Layer (business logic)**
+4. **Controller Layer (API)**
+5. **React Frontend**
+6. **ML Microservice**
+7. **Integration Layer (Spring ↔ ML)**
+8. **Polish + Deployment**
+
+This ensures your system grows clean and scalable.
+
+---
+
+If you want next, I can deliver:
+
+### ✔ A *folder structure* for Spring Boot + React + ML
+
+### ✔ A *microservice-level architecture diagram*
+
+### ✔ A *full database ER diagram*
+
+Tell me which one you want!
